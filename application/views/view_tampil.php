@@ -6,7 +6,9 @@
 	<center>
 		<h1>Create CRUD with Code Igniter</h1>
 	</center>
-	<center><?php echo anchor('crud/add', 'Tambah Data'); //anchor(); used to create hyperlinks ?></center>
+	<center><?php echo anchor('crud/add', 'New Data'); //anchor(); used to create hyperlinks ?></center>
+	<center><?php echo anchor('crud/upload', 'Upload Image'); ?></center>
+	<center><?php echo anchor('crud/get_info', 'See Information Visitor'); ?></center>
 	<table style="margin: 20px auto; " border='1'>
 		<tr>
 			<th>No</th>

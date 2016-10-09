@@ -31,5 +31,19 @@ class Model_data extends CI_Model
 		$this->db->where($whereArgs);
 		$this->db->update($table, $data);
 	}
+
+	function getImage(){		
+		$files = scandir(realpath(APPPATH . '../upload_image/'));//scandir for real path
+		$files = array_diff($files, array('.','..'));//get rid of '.' and '..' when scan dir in subdir
+		$images = array();
+
+		foreach ($files as $file) {
+			$images[] = array(
+				'url' => base_url().'upload_image/'.$file //adding URL of images into '$images' variable
+				);
+		}
+
+		return $images;
+	}
 }
 ?>

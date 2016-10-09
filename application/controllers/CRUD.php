@@ -87,5 +87,65 @@ class Crud extends CI_Controller
 		$this->model_data->updateData($whereArgs, $data, 'user');
 		redirect('crud/index','refresh');
 	}
+
+	function upload(){
+		//preparing for display image
+		// $data['images'] = $this->model_data->getImage();
+
+		//load view by passng parameter ' ' assumed as '$data'
+		$data = array(
+			'error' => ' ',
+			'images' => $this->model_data->getImage()
+			);
+		$this->load->view('view_upload', $data);
+
+	}
+
+	function upload_action(){
+		//this function using form 'helper'
+		// that load in autoload.php section 'helper'
+		$config['upload_path'] = './upload_image/';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size'] = 1000;
+		$config['max_width'] = 2096;
+		$config['max_height'] = 1526;
+
+		//these are config to upload image
+		//and 'upload_path' placed in root folder like applicaion, system etc. folder
+		//after '$config' set then load library 'upload'
+		$this->load->library('upload', $config);
+
+		//'file_berkas' is name attribute from input tag in 'view_upload'
+		if (! $this->upload->do_upload('file_berkas')) {
+			//when file cannot to upload eror will be displayed
+			$data = array(
+				'error' => $this->upload->display_errors(),
+				'images' => $this->model_data->getImage()
+				);
+			$this->load->view('view_upload', $data);
+		}else{
+			//when upoad process success
+			//then meta-data of image file sent as parameter
+			$data = array('upload_data' => $this->upload->data());
+			$this->load->view('view_upload_success', $data);
+		}
+	}
+
+	//this function is about to gather information of visitors
+	//this function helped by library 'user_agent'
+	function get_info(){
+		if ($this->agent->is_browser()) {
+			$agent = $this->agent->browser().' '.$this->agent->version();
+		}else if($this->agent->is_mobile()){
+			$agent = $this->agent->mobile();
+		}else{
+			$agent = "User Data Visitor Failed to Gather";
+		}
+
+		echo "Accessed from: <br>";
+		echo "Browser: ".$agent."<br>";
+		echo "Operation System: ".$this->agent->platform()."<br>";
+		echo "IP address: ".$this->input->ip_address();//only can be accesed from hosting
+	}
 }
 ?>
